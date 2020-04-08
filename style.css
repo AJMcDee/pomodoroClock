@@ -1,0 +1,121 @@
+/* Colour scheme: 
+    White: #FDFFFC
+    Red: #F42C04
+    Yellow: #FFD000
+    Light gray-green: #CBD6BC
+    Black: #0F1A20 */
+
+body {
+    background-color: #CBD6BC;
+    color: #0F1A20;
+    font-family: 'Gochi Hand', serif;
+}
+
+h1 {
+    font-size: 55px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+
+
+
+div {
+    /* border: 1px solid black; */
+    align-self: center;
+}
+
+.arrow {
+    font-size: 30px;
+    margin: 0px 5px 0px 5px;
+    padding: 0px 5px 0px 5px;
+}
+
+a:hover{
+    color: #FFD000 !important;
+}
+
+.time {
+    font-family: 'Space Mono', sans-serif;
+    font-size: 25px;
+}
+
+#container {
+    background-image: url(tomato.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 500px;
+    height: 500px;
+    padding: 10px;
+    margin: 100px;
+    border-radius: 50%;
+
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 1fr 50px 30px 1fr 80px;
+
+
+    grid-template-areas: 
+        "title title title title title title"
+        "session session session break break break"
+        "downsesh seshtime upsesh downbreak breaktime upbreak"
+        "clock clock clock clock clock clock"
+        ". play pause stop reset .";
+}
+
+
+#title {
+    margin-top: 130px;
+    grid-area: title;
+}
+
+#session {
+    font-size: 30px;
+    grid-area: session;
+}
+#break {
+    font-size: 30px;
+    grid-area: break;
+}
+#downsesh {
+    grid-area: downsesh;
+    justify-self: right;
+}
+#seshtime {
+    grid-area: seshtime;
+}
+#upsesh {
+    grid-area: upsesh;
+    justify-self: left;
+}
+#downbreak {
+    grid-area: downbreak;
+    justify-self: right;
+}
+#breaktime {
+    grid-area: breaktime;
+}
+#upbreak {
+    grid-area: upbreak;
+    justify-self: left;
+}
+#clock {
+    grid-area: clock;
+    font-size: 80px;
+    margin: 0px;
+}
+#play {
+    margin-bottom: 30px;
+    grid-area: play;
+}
+#pause {
+    margin-bottom: 30px;
+    grid-area: pause;
+}
+#stop {
+    margin-bottom: 30px;
+    grid-area: stop;
+}
+#reset {
+    margin-bottom: 30px;
+    grid-area: reset;
+}
