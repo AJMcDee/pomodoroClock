@@ -7,27 +7,26 @@
 
 body {
     background-color: #CBD6BC;
-    color: #0F1A20;
-    font-family: 'Gochi Hand', serif;
+    color: #FDFFFC;
+    font-family: 'Indie Flower', serif;
+    text-shadow: #666666 2px 2px 2px;
 }
 
 h1 {
     font-size: 55px;
     margin-top: 20px;
     margin-bottom: 0px;
+
 }
 
-
+a:active {
+    text-shadow: 2px 2px black;
+    transform: translateY(6px);
+  }
 
 div {
     /* border: 1px solid black; */
     align-self: center;
-}
-
-.arrow {
-    font-size: 30px;
-    margin: 0px 5px 0px 5px;
-    padding: 0px 5px 0px 5px;
 }
 
 a:hover{
@@ -37,6 +36,10 @@ a:hover{
 .time {
     font-family: 'Space Mono', sans-serif;
     font-size: 25px;
+}
+
+.material-icons {
+    font-size: 35px;
 }
 
 #container {
@@ -51,7 +54,7 @@ a:hover{
 
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: 1fr 50px 30px 1fr 80px;
+    grid-template-rows: 1fr 30px 30px 1fr 100px;
 
 
     grid-template-areas: 

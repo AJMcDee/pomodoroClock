@@ -1,9 +1,11 @@
 <html>
     <head>
+        <link rel="preload" href="tomato.png" as="image">
         <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Gochi Hand">
+        href="https://fonts.googleapis.com/css?family=Indie Flower">
         <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Space Mono">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet"  type="text/css" href="style.css">
         <title>Pomodoro Clock</title>
     </head>
@@ -13,17 +15,17 @@
             <div id="title"><h1>Pomodoro Clock</h1></div>
             <div id="session">Session</div>
             <div id="break">Break</div>
-            <div id="downsesh" class="arrow"><a>v</a></div>
+            <div id="downsesh"><a id="sessionDownArrow"><i class="material-icons">keyboard_arrow_down</i></a></div>
             <div id="seshtime" class="time">25:00</div>
-            <div id="upsesh" class="arrow"><a>^</a></div>
-            <div id="downbreak" class="arrow"><a>v</a></div>
+            <div id="upsesh"><a id="sessionUpArrow"><i class="material-icons">keyboard_arrow_up</i></a></div>
+            <div id="downbreak"><a id="breakDownArrow"><i class="material-icons">keyboard_arrow_down</i></a></div>
             <div id="breaktime" class="time">05:00</div>
-            <div id="upbreak" class="arrow"><a>^</a></div>
+            <div id="upbreak"><a id="breakUpArrow"><i class="material-icons">keyboard_arrow_up</i></a></div>
             <div id="clock" class="time">25:00</div>
-            <div id="play"><a>></a></div>
-            <div id="pause"><a>||</a></div>
-            <div id="stop"><a>O</a></div>
-            <div id="reset"><a>@</a></div>
+            <div id="play"><a id="playButton"><i class="material-icons">play_circle_outline</i></a></div>
+            <div id="pause"><a id="pauseButton"><i class="material-icons">pause_circle_outline</i></a></div>
+            <div id="stop"><a id="stopButton"><i class="material-icons">stop</i></a></div>
+            <div id="reset"><a id="resetButton"><i class="material-icons">replay</i></a></div>
 
         </div>
         <script src="script.js"></script>
