@@ -6,27 +6,34 @@
 // Reset goes back to 25/5
 // Have arrows adjust timers
 
-let sessionTime = 25 * 60 * 1000 //25 minute default session time
-let breakTime = 5 * 60 * 1000 //5 minute default break time
-let sessionTimer = 25 * 60 * 1000 //25 minute default session timer
-let breakTimer = 5 * 60 * 1000 //5 minute default break timer
+let sessionEntry = 25;
+let breakEntry = 5;
+let sessionTime = 5000 //25 minute default session time
+let breakTime = breakEntry * 60 * 1000 //5 minute default break time
+let timer
 let currentTime
 let deadline
+let timeInterval
 
 const playButton = document.getElementById("playButton");
+const stopButton = document.getElementById("stopButton");
 const clock = document.getElementById("clock");
 
-
-function breakAlert(){ //Counts down until break IE SESSION COUNTER
+function breakAlert(){ //Counts down until break
     alert("Take a break!")
-    breakTimer = setTimeout(sessionAlert, breakTime)
+    currentTime = Date.parse(new Date());
+    deadline = new Date(currentTime + breakTime);
+    runClock(deadline)
+    timer = setTimeout(sessionAlert, breakTime)
     return
 };
 
-function sessionAlert(){ //Counts down until session IE BREAK COUNTER
+function sessionAlert(){ //Counts down until session
     alert("Get back to work!")
-    clock.textContent = ""
-    sessionTimer = setTimeout(breakAlert, sessionTime)
+    currentTime = Date.parse(new Date());
+    deadline = new Date(currentTime + sessionTime);
+    runClock(deadline)
+    timer = setTimeout(breakAlert, sessionTime)
     return
 };
 
@@ -34,19 +41,33 @@ playButton.addEventListener("click", function(){
     currentTime = Date.parse(new Date());
     deadline = new Date(currentTime + sessionTime);
     runClock(deadline)
-    setTimeout(breakAlert, sessionTime)
+    timer = setTimeout(breakAlert, sessionTime)
+
+})
+
+stopButton.addEventListener("click", function(){
+    clearInterval(timer)
+    clearInterval(timeInterval)
+    clock.textContent = "00:00"
 })
 
 
 
 function runClock(deadline) {
+
     function updateClock() {
         let timeRemaining = Date.parse(deadline) - Date.parse(new Date());
         let seconds = Math.floor( (timeRemaining/1000) % 60 );
         let minutes = Math.floor( (timeRemaining/1000/60) % 60 );
-        clock.textContent = `${minutes}:${seconds}`
-        if(timeRemaining.total<=0){ clearInterval(timeInterval); }
+        clock.textContent = `${showPretty(minutes)}:${showPretty(seconds)}`
+        if(timeRemaining <= 0 ){ clearInterval(timeInterval); }
     }
     updateClock();
-    let timeInterval = setInterval(updateClock, 1000);
+    timeInterval = setInterval(updateClock, 1000);
+}
+
+function showPretty(value){
+    if (value <= 9) {
+        return "0" + value;
+    }
 }
