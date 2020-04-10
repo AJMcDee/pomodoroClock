@@ -29,6 +29,11 @@ div {
     align-self: center;
 }
 
+footer a {
+    color: #FDFFFC;
+}
+
+
 a:hover{
     color: #FFD000 !important;
 }
