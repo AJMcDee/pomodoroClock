@@ -23,17 +23,21 @@ const downseshButton = document.getElementById("downsesh");
 const upseshButton = document.getElementById("upsesh");
 const downbreakButton = document.getElementById("downbreak");
 const upbreakButton = document.getElementById("upbreak");
+const splat = document.getElementById("splat");
 let sessionEntry = document.getElementById("seshtime").textContent;
 let breakEntry = document.getElementById("breaktime").textContent;
 document.getElementById("session").style.visibility = "visible";
 document.getElementById("break").style.visibility = "visible";
 
-function getMiliseconds(timeInMinutes) {
-    return timeInMinutes * 60000
-}
+
 let sessionTime = sessionEntry * 60000;
 let breakTime = breakEntry * 60000 //5 minute default break time
 
+function getMiliseconds(timeInMinutes) {
+    return timeInMinutes * 60000
+}
+
+// Up- and down-arrows
 
 downseshButton.addEventListener("click", function() {
     (sessionEntry > 1) ? sessionEntry = sessionEntry - 1 : sessionEntry = 1;
@@ -56,35 +60,32 @@ upbreakButton.addEventListener("click", function() {
     return breakEntry
 })
 
+// Setting functions for end-of-timer events
 
-
-function breakCountdown(){ //Countdown until a break, 25min default
-    alert("Take a break!")
+function breakCountdown(){ //Countdown during break, 5min default
+    splat.play();
+    hideDuringBreak();
     breakTime = getMiliseconds(breakEntry)
     currentTime = Date.parse(new Date());
     deadline = new Date(currentTime + breakTime);
     runClock(deadline)
     timer = setTimeout(sessionCountdown, breakTime)
-    showAll();
-    hideDuringSession();
-    return
 };
 
-function sessionCountdown(){ //Countdown until session, 5min default
-    alert("Get back to work!")
+function sessionCountdown(){ //Countdown during session, 25min default
+    splat.play()
+    hideDuringSession();
     sessionTime = getMiliseconds(sessionEntry);
     currentTime = Date.parse(new Date());
     deadline = new Date(currentTime + sessionTime);
     runClock(deadline)
     timer = setTimeout(breakCountdown, sessionTime)
-    showAll()
-    hideDuringBreak();
-    return
 };
 
+// Setting functions for lower buttons
 
 playButton.addEventListener("click", function(){
-    
+
     // Sets the trigger for updating with new timer info for when both 'break' and 'session' are
     // visible, i.e. in the 'reset'/'new' state. While also preserving the hidden
     // state after a pause event.
@@ -92,6 +93,7 @@ playButton.addEventListener("click", function(){
         hideDuringBreak()
     } else if (document.getElementById("session").style.visibility === "visible" && 
     document.getElementById("break").style.visibility === "visible"){
+        splat.play();
         sessionTime = getMiliseconds(sessionEntry);
         hideDuringSession();
     }    else {
@@ -148,10 +150,6 @@ function runClock(deadline) {
 }
 
 
-
-
-
-
 function showPretty(value){
     if (value <= 9) {
         return "0" + value;
@@ -169,6 +167,7 @@ function showElement(id) {
 }
 
 function hideDuringSession() {
+    showElement("session");
     hideElement("downsesh");
     hideElement("break");
     hideElement("seshtime");
@@ -179,6 +178,7 @@ function hideDuringSession() {
 }
 
 function hideDuringBreak() {
+    showElement("break");
     hideElement("downsesh");
     hideElement("session");
     hideElement("seshtime");
