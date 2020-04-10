@@ -7,12 +7,8 @@
 // Pause toggles start/stop state
 // Reset goes back to 25/5
 // Have arrows adjust timers and display
-
-let sessionEntry = 25;
-let breakEntry = 5;
 // let sessionTime = sessionEntry * 60000 //25 minute default session time
-let sessionTime = 5000;
-let breakTime = breakEntry * 60000 //5 minute default break time
+
 let timer
 let currentTime
 let deadline
@@ -23,28 +19,146 @@ const stopButton = document.getElementById("stopButton");
 const pauseButton = document.getElementById("pauseButton");
 const resetButton = document.getElementById("resetButton");
 const clock = document.getElementById("clock");
+const downseshButton = document.getElementById("downsesh");
+const upseshButton = document.getElementById("upsesh");
+const downbreakButton = document.getElementById("downbreak");
+const upbreakButton = document.getElementById("upbreak");
+let sessionEntry = document.getElementById("seshtime").textContent;
+let breakEntry = document.getElementById("breaktime").textContent;
+document.getElementById("session").style.visibility = "visible";
+document.getElementById("break").style.visibility = "visible";
 
-function breakCountdown(){
+function getMiliseconds(timeInMinutes) {
+    return timeInMinutes * 60000
+}
+let sessionTime = sessionEntry * 60000;
+let breakTime = breakEntry * 60000 //5 minute default break time
+
+
+downseshButton.addEventListener("click", function() {
+    (sessionEntry > 1) ? sessionEntry = sessionEntry - 1 : sessionEntry = 1;
+    document.getElementById("seshtime").textContent = `${sessionEntry}`;
+    return sessionEntry
+})
+upseshButton.addEventListener("click", function() {
+    sessionEntry = parseInt(sessionEntry) + 1;
+    document.getElementById("seshtime").textContent = `${sessionEntry}`;
+    return sessionEntry
+})
+downbreakButton.addEventListener("click", function() {
+    (breakEntry > 1) ? breakEntry = breakEntry - 1 : breakEntry = 1;    
+    document.getElementById("breaktime").textContent = `${breakEntry}`;
+    return breakEntry
+})
+upbreakButton.addEventListener("click", function() {
+    breakEntry = parseInt(breakEntry) + 1;
+    document.getElementById("breaktime").textContent = `${breakEntry}`;
+    return breakEntry
+})
+
+
+
+function breakCountdown(){ //Countdown until a break, 25min default
     alert("Take a break!")
+    breakTime = getMiliseconds(breakEntry)
     currentTime = Date.parse(new Date());
     deadline = new Date(currentTime + breakTime);
     runClock(deadline)
     timer = setTimeout(sessionCountdown, breakTime)
     showAll();
-    hideDuringBreak();
+    hideDuringSession();
     return
 };
 
-function sessionCountdown(){
+function sessionCountdown(){ //Countdown until session, 5min default
     alert("Get back to work!")
+    sessionTime = getMiliseconds(sessionEntry);
     currentTime = Date.parse(new Date());
     deadline = new Date(currentTime + sessionTime);
     runClock(deadline)
     timer = setTimeout(breakCountdown, sessionTime)
     showAll()
-    hideDuringSession();
+    hideDuringBreak();
     return
 };
+
+
+playButton.addEventListener("click", function(){
+    
+    // Sets the trigger for updating with new timer info for when both 'break' and 'session' are
+    // visible, i.e. in the 'reset'/'new' state. While also preserving the hidden
+    // state after a pause event.
+    if (document.getElementById("session").style.visibility == "hidden") {
+        hideDuringBreak()
+    } else if (document.getElementById("session").style.visibility === "visible" && 
+    document.getElementById("break").style.visibility === "visible"){
+        sessionTime = getMiliseconds(sessionEntry);
+        hideDuringSession();
+    }    else {
+        hideDuringSession();
+    }
+
+
+    currentTime = Date.parse(new Date());
+    deadline = new Date(currentTime + sessionTime);
+    runClock(deadline)
+    timer = setTimeout(breakCountdown, sessionTime)
+})
+
+stopButton.addEventListener("click", function(){
+    clearInterval(timer)
+    clearInterval(timeInterval)
+    clock.textContent = `${sessionEntry}:00`
+    showAll()
+})
+
+pauseButton.addEventListener("click", function(){
+    let clockValue = clock.textContent;
+    clearInterval(timer)
+    clearInterval(timeInterval)
+    clock.textContent = clockValue;
+    clockValue = clockValue.split(":");
+    let pauseMinutes = clockValue[0] * 60000;
+    let pauseSeconds = clockValue[1] * 1000;
+    sessionTime = pauseSeconds + pauseMinutes;
+})
+
+resetButton.addEventListener("click", function(){
+    clearInterval(timer)
+    clearInterval(timeInterval)
+    sessionEntry = 25;
+    breakEntry = 5;
+    document.getElementById("breaktime").textContent = `${breakEntry}`;
+    document.getElementById("seshtime").textContent = `${sessionEntry}`;
+    clock.textContent = `${sessionEntry}:00`
+    showAll()
+})
+
+function runClock(deadline) {
+
+    function updateClock() {
+        let timeRemaining = Date.parse(deadline) - Date.parse(new Date());
+        let seconds = Math.floor( (timeRemaining/1000) % 60 );
+        let minutes = Math.floor( (timeRemaining/1000/60) % 60 );
+        clock.textContent = `${showPretty(minutes)}:${showPretty(seconds)}`
+        if(timeRemaining <= 0 ){ clearInterval(timeInterval); }
+    }
+    updateClock();
+    timeInterval = setInterval(updateClock, 1000);
+}
+
+
+
+
+
+
+function showPretty(value){
+    if (value <= 9) {
+        return "0" + value;
+    } else {
+        return value
+    }
+}
 
 function hideElement(id) {
     document.getElementById(id).style.visibility = "hidden";
@@ -83,55 +197,4 @@ function showAll() {
     showElement("downbreak");
     showElement("breaktime");
     showElement("upbreak");
-}
-
-playButton.addEventListener("click", function(){
-    currentTime = Date.parse(new Date());
-    deadline = new Date(currentTime + sessionTime);
-    runClock(deadline)
-    if (document.getElementById("session").style.visibility == "hidden") {
-        hideDuringBreak()
-    } else {
-        hideDuringSession()
-    }
-    timer = setTimeout(breakCountdown, sessionTime)
-})
-
-stopButton.addEventListener("click", function(){
-    clearInterval(timer)
-    clearInterval(timeInterval)
-    clock.textContent = "00:00"
-    showAll()
-})
-
-pauseButton.addEventListener("click", function(){
-    let clockValue = clock.textContent;
-    clearInterval(timer)
-    clearInterval(timeInterval)
-    clock.textContent = clockValue;
-    clockValue = clockValue.split(":");
-    let pauseMinutes = clockValue[0] * 60000;
-    let pauseSeconds = clockValue[1] * 1000;
-    sessionTime = pauseSeconds + pauseMinutes;
-})
-
-function runClock(deadline) {
-
-    function updateClock() {
-        let timeRemaining = Date.parse(deadline) - Date.parse(new Date());
-        let seconds = Math.floor( (timeRemaining/1000) % 60 );
-        let minutes = Math.floor( (timeRemaining/1000/60) % 60 );
-        clock.textContent = `${showPretty(minutes)}:${showPretty(seconds)}`
-        if(timeRemaining <= 0 ){ clearInterval(timeInterval); }
-    }
-    updateClock();
-    timeInterval = setInterval(updateClock, 1000);
-}
-
-function showPretty(value){
-    if (value <= 9) {
-        return "0" + value;
-    } else {
-        return value
-    }
 }
