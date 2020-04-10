@@ -1,14 +1,3 @@
-// Set default timers
-// Use play button to start timer
-// Display time in browser
-// Have timer display an alert after first timer runs out, cue second timer, repeat first timer : until stop is pressed
-// Have Session be the only word showing while timer is running, then break during break, until Stop button is pressed
-// Stop puts everything to 0
-// Pause toggles start/stop state
-// Reset goes back to 25/5
-// Have arrows adjust timers and display
-// let sessionTime = sessionEntry * 60000 //25 minute default session time
-
 let timer
 let currentTime
 let deadline
@@ -29,15 +18,12 @@ let breakEntry = document.getElementById("breaktime").textContent;
 document.getElementById("session").style.visibility = "visible";
 document.getElementById("break").style.visibility = "visible";
 
-
 let sessionTime = sessionEntry * 60000;
 let breakTime = breakEntry * 60000 //5 minute default break time
 
-function getMiliseconds(timeInMinutes) {
-    return timeInMinutes * 60000
-}
 
-// Up- and down-arrows
+
+// Up- and down-arrow functionality
 
 downseshButton.addEventListener("click", function() {
     (sessionEntry > 1) ? sessionEntry = sessionEntry - 1 : sessionEntry = 1;
@@ -60,28 +46,6 @@ upbreakButton.addEventListener("click", function() {
     return breakEntry
 })
 
-// Setting functions for end-of-timer events
-
-function breakCountdown(){ //Countdown during break, 5min default
-    splat.play();
-    hideDuringBreak();
-    breakTime = getMiliseconds(breakEntry)
-    currentTime = Date.parse(new Date());
-    deadline = new Date(currentTime + breakTime);
-    runClock(deadline)
-    timer = setTimeout(sessionCountdown, breakTime)
-};
-
-function sessionCountdown(){ //Countdown during session, 25min default
-    splat.play()
-    hideDuringSession();
-    sessionTime = getMiliseconds(sessionEntry);
-    currentTime = Date.parse(new Date());
-    deadline = new Date(currentTime + sessionTime);
-    runClock(deadline)
-    timer = setTimeout(breakCountdown, sessionTime)
-};
-
 // Setting functions for lower buttons
 
 playButton.addEventListener("click", function(){
@@ -99,7 +63,6 @@ playButton.addEventListener("click", function(){
     }    else {
         hideDuringSession();
     }
-
 
     currentTime = Date.parse(new Date());
     deadline = new Date(currentTime + sessionTime);
@@ -136,8 +99,34 @@ resetButton.addEventListener("click", function(){
     showAll()
 })
 
-function runClock(deadline) {
+// Setting functions for end-of-timer events
 
+function breakCountdown(){ //Countdown during break, 5min default
+    splat.play();
+    hideDuringBreak();
+    breakTime = getMiliseconds(breakEntry)
+    currentTime = Date.parse(new Date());
+    deadline = new Date(currentTime + breakTime);
+    runClock(deadline)
+    timer = setTimeout(sessionCountdown, breakTime)
+};
+
+function sessionCountdown(){ //Countdown during session, 25min default
+    splat.play()
+    hideDuringSession();
+    sessionTime = getMiliseconds(sessionEntry);
+    currentTime = Date.parse(new Date());
+    deadline = new Date(currentTime + sessionTime);
+    runClock(deadline)
+    timer = setTimeout(breakCountdown, sessionTime)
+};
+
+/// Clock and helper functions
+
+function getMiliseconds(timeInMinutes) {
+    return timeInMinutes * 60000
+}
+function runClock(deadline) {
     function updateClock() {
         let timeRemaining = Date.parse(deadline) - Date.parse(new Date());
         let seconds = Math.floor( (timeRemaining/1000) % 60 );
@@ -145,7 +134,7 @@ function runClock(deadline) {
         clock.textContent = `${showPretty(minutes)}:${showPretty(seconds)}`
         if(timeRemaining <= 0 ){ clearInterval(timeInterval); }
     }
-    updateClock();
+    updateClock();  ///Avoids 1sec delay
     timeInterval = setInterval(updateClock, 1000);
 }
 
