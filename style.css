@@ -29,6 +29,14 @@ div {
     align-self: center;
 }
 
+footer {
+    display: flexbox;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 30px;
+}
+
 footer a {
     color: #FDFFFC;
 }
