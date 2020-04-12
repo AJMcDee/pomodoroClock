@@ -95,6 +95,7 @@ a:hover{
 #downsesh {
     grid-area: downsesh;
     justify-self: right;
+    cursor: pointer;
 }
 #seshtime {
     grid-area: seshtime;
@@ -102,10 +103,12 @@ a:hover{
 #upsesh {
     grid-area: upsesh;
     justify-self: left;
+    cursor: pointer;
 }
 #downbreak {
     grid-area: downbreak;
     justify-self: right;
+    cursor: pointer;
 }
 #breaktime {
     grid-area: breaktime;
@@ -113,6 +116,7 @@ a:hover{
 #upbreak {
     grid-area: upbreak;
     justify-self: left;
+    cursor: pointer;
 }
 #clock {
     grid-area: clock;
@@ -122,16 +126,20 @@ a:hover{
 #play {
     margin-bottom: 30px;
     grid-area: play;
+    cursor: pointer;
 }
 #pause {
     margin-bottom: 30px;
     grid-area: pause;
+    cursor: pointer;
 }
 #stop {
     margin-bottom: 30px;
     grid-area: stop;
+    cursor: pointer;
 }
 #reset {
     margin-bottom: 30px;
     grid-area: reset;
+    cursor: pointer;
 }
